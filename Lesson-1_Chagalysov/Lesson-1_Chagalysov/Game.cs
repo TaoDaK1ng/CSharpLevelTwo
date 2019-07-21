@@ -12,7 +12,10 @@ namespace Lesson_1_Chagalysov
     {
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
-        public static BaseObject[] _objs;
+        private static Star[] _stars;
+        private static Asteroid[] _asteroids;
+        private static Meteorite[] _meteorites;
+        private static Bullet bullet;
         // Свойства
         // Ширина и высота игрового поля
         public static int Width { get; set; }
@@ -29,35 +32,58 @@ namespace Lesson_1_Chagalysov
             g = form.CreateGraphics();
             // Создаем объект (поверхность рисования) и связываем его с формой
             // Запоминаем размеры формы
-            Width = form.ClientSize.Width;
-            Height = form.ClientSize.Height;
+            try
+            {
+                Width = form.ClientSize.Width;
+                Height = form.ClientSize.Height;
+            }
+            catch (ArgumentOutOfRangeException e) when (Width > 1000 || Height > 1000 || Width < 0 || Height > 0)
+            {
+                Console.WriteLine(e.Message);
+            }
             // Связываем буфер в памяти с графическим объектом, чтобы рисовать в буфере
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
             Load();
-            Timer timer = new Timer { Interval = 40 };
+            Timer timer = new Timer { Interval = 10 };
             timer.Start();
             timer.Tick += Timer_Tick;
         }
         public static void Draw()
         {
             Buffer.Graphics.Clear(Color.Black);
-            foreach (BaseObject obj in _objs)
-                obj.Draw();
+            foreach (Star obj in _stars) obj.Draw();
+            foreach (Asteroid obj in _asteroids) obj.Draw();
+            foreach (Meteorite obj in _meteorites) obj.Draw();
+            bullet.Draw();
             Buffer.Render();
         }
         public static void Load()
         {
-            _objs = new BaseObject[30];
-            Random r = new Random();
-            for (int i = 0; i < _objs.Length / 2; i++)
-                _objs[i] = new Star(new Point(800, r.Next(0, 600)), new Point(i, 10), new Size(5, 5));
-            for (int i = _objs.Length / 2; i < _objs.Length; i++)
-                _objs[i] = new Star(new Point(800, r.Next(0, 600)), new Point(i, 10), new Size(5, 5));
+            _stars = new Star[15];
+            _asteroids = new Asteroid[5];
+            _meteorites = new Meteorite[15];
+            bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(5, 5));
+            Random rnd = new Random();
+            for (int i = 0; i < _stars.Length; i++)
+                _stars[i] = new Star(new Point(Game.Width, rnd.Next(0, Game.Height)), new Point(rnd.Next(0, 30), 10), new Size(5, 5));
+            for (int i = 0; i < _asteroids.Length; i++)
+                _asteroids[i] = new Asteroid(new Point(Game.Width, rnd.Next(0, Game.Height)), new Point(rnd.Next(0, 20), 10), new Size(50, 50));
+            for (int i = 0; i < _meteorites.Length; i++)
+                _meteorites[i] = new Meteorite(new Point(Game.Width, rnd.Next(0, Game.Height)), new Point(rnd.Next(0, 20), 10), new Size(5, 5));
         }
         public static void Update()
         {
-            foreach (BaseObject obj in _objs)
+            foreach (Star obj in _stars) obj.Update();
+            foreach (Asteroid obj in _asteroids)
+            {
                 obj.Update();
+                if (obj.Collision(bullet))
+                {
+                    System.Media.SystemSounds.Beep.Play();
+                }   
+            } 
+            foreach (Meteorite obj in _meteorites) obj.Update();
+            bullet.Update();
         }
         private static void Timer_Tick(object sender, EventArgs e)
         {
