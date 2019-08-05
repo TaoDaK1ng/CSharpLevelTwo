@@ -7,13 +7,12 @@ using System.Drawing;
 
 namespace Lesson_1_Chagalysov
 {
-    class Bullet : BaseObject
+    class Aidkit : BaseObject
     {
         Image image;
-        public int Power { get; set; }
-        public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size)
+        public Aidkit(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
-            image = new Bitmap("bullet2.png");
+            image = new Bitmap("aidkit.png");
         }
         public override void Draw()
         {
@@ -21,7 +20,8 @@ namespace Lesson_1_Chagalysov
         }
         public override void Update()
         {
-            Pos.X = Pos.X + 10;
+            Pos.X = Pos.X - Dir.X;
+            if (Pos.X < 0) Pos.X = Game.Width + Size.Width;
         }
     }
 }
