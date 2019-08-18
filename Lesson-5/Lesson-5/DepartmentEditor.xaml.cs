@@ -15,13 +15,17 @@ using System.Windows.Shapes;
 namespace Lesson_5
 {
     /// <summary>
-    /// Логика взаимодействия для ChangeDepartment.xaml
+    /// Логика взаимодействия для DepartmentEditor.xaml
     /// </summary>
-    public partial class ChangeDepartment : Window
+    public partial class DepartmentEditor : Window
     {
-        public ChangeDepartment()
+        public DepartmentEditor()
         {
             InitializeComponent();
+        }
+        public DepartmentEditor(Department department): this()
+        {
+            StackPanel.DataContext = department;   
         }
     }
 }

@@ -1,22 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Lesson_5
 {
-    class Department
+   public class Department
     {
-        public string Name { get; set; }
-        public string Employee { get; set; }
-        public Department(string name)
+        //public int DepartmentID { get; set; }
+        //public string Title { get; set; }
+        Connection _connection;
+        SqlDataAdapter _adapter;
+        public DataTable Table { get; set; }
+
+        public Department()
         {
-            Name = name;            
+            Table = new DataTable();
+            _adapter = new SqlDataAdapter();
+            _connection = new Connection();
+            Table = EmployeesConclusion(Table, _adapter);
         }
-        public Department(string name, string employee) : this(name)
+        public void DepartmentAdd(string title)
         {
-            Employee = employee;
+            _connection.ConnectionOpen();
+            SqlCommand command = new SqlCommand("INSERT INTO Departments (Title) VALUES (@Title)", _connection.SqlConnection);
+            command.Parameters.Add("@Title", System.Data.SqlDbType.NVarChar, 50, "Title");
+            _adapter.InsertCommand = command;
+            DataRow newRow = Table.NewRow();
+            newRow["Title"] = title;
+            Table.Rows.Add(newRow);
+            _adapter.Update(Table);
+            _connection.ConnectionClose();
+        }
+        public void DepartmentUpdate(string title, int id)
+        {
+            _connection.ConnectionOpen();
+            SqlCommand command = new SqlCommand("UPDATE Departments SET Title=@Title WHERE ID=@ID", _connection.SqlConnection);
+            command.Parameters.Add("@Title", System.Data.SqlDbType.NVarChar, 50, "Title");
+            command.Parameters.Add("@ID", System.Data.SqlDbType.BigInt, 0, "ID");
+            _adapter.UpdateCommand = command;
+            _adapter.Update(Table);
+            _connection.ConnectionClose();
+        }
+        public void DepartmentDelete(int id)
+        {
+            _connection.ConnectionOpen();
+            SqlCommand command = new SqlCommand("DELETE FROM Departments WHERE ID=@ID", _connection.SqlConnection);
+            command.Parameters.Add("@ID", System.Data.SqlDbType.BigInt, 0, "ID");
+            _adapter.DeleteCommand = command;
+            _adapter.Update(Table);
+            _connection.ConnectionClose();
+        }
+
+        public DataTable EmployeesConclusion(DataTable table, SqlDataAdapter adapter)
+        {
+            _connection.ConnectionOpen();
+            SqlCommand command = new SqlCommand("SELECT * FROM Departments", _connection.SqlConnection);
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
+            _connection.ConnectionClose();
+            return table;
         }
     }
 }
