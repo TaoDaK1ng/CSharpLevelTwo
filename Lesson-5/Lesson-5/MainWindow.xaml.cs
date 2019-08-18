@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data;
+using System.Diagnostics;
 
 namespace Lesson_5
 {
@@ -21,18 +23,37 @@ namespace Lesson_5
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<string> list = new ObservableCollection<string>();
+        public Employee worker;
+        public Department department;
+        DataTable EmployeeTable;
+        DataTable DepartmentTable;
         public MainWindow()
         {
-            list.Add("Артём");
-            
-           
-            InitializeComponent();   
+            InitializeComponent();
+            worker = new Employee();
+            department = new Department();
+            EmployeeTable = worker.Table;
+            DepartmentTable = department.Table;
+            EmployeeGrid.DataContext = EmployeeTable.DefaultView;
+            DepartmentGrid.DataContext = DepartmentTable.DefaultView;
+            ChangeEmployeeBtn.Click += (sender, e) => new EmployeeEditor((DataRowView)EmployeeGrid.SelectedItem, worker, department).Show();
+            //ChangeDepartmentBtn.Click += (sender, e) => new DepartmentEditor(DepartmentList.SelectedItem as Department).Show();
+            CreateEmployeeBtn.Click += (sender, e) => new CreateEmployee().Show();
+            CreateDepartmentBtn.Click += (sender, e) => new CreateDepartment().Show();
+            //this.Activated += (sender, e) => {
+            //    EmployeeGrid.DataContext = EmployeeTable.DefaultView;
+            //    DepartmentGrid.DataContext = DepartmentTable.DefaultView;
+            //};
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void DepartmentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            new ChangeDepartment().Show();
+            //EmployeeList.ItemsSource = Db.Employees.Where(o => o.DepartmentId == DepartmentList.SelectedIndex);
         }
+
+        //private void Window_Activated(object sender, EventArgs e)
+        //{
+        //    EmployeeList.ItemsSource = Db.Employees.Where(o => o.DepartmentId == DepartmentList.SelectedIndex);
+        //}
     }
 }

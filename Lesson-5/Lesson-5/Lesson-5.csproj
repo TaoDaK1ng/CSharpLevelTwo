@@ -55,7 +55,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ChangeDepartment.xaml">
+    <Compile Include="Connection.cs" />
+    <Compile Include="CreateDepartment.xaml.cs">
+      <DependentUpon>CreateDepartment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CreateEmployee.xaml.cs">
+      <DependentUpon>CreateEmployee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DepartmentEditor.xaml.cs">
+      <DependentUpon>DepartmentEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeEditor.xaml.cs">
+      <DependentUpon>EmployeeEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Repository.cs" />
+    <Page Include="CreateDepartment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CreateEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DepartmentEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EmployeeEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -66,9 +92,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ChangeDepartment.xaml.cs">
-      <DependentUpon>ChangeDepartment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
