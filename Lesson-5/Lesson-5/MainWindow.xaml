@@ -13,14 +13,7 @@
             <ColumnDefinition Width="215" />
         </Grid.ColumnDefinitions>
 
-        <ListView Name="EmployeeGrid" HorizontalAlignment="Stretch" ItemsSource ="{Binding}" VerticalAlignment="Top" Margin="10" Height="350" Grid.Column="0">
-            <!--<DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}"/>
-                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
-                <DataGridTextColumn Header="Отчество" Binding="{Binding MiddleName}"/>
-                <DataGridTextColumn Header="Департамент" Binding="{Binding DepartmentId}"/>
-            </DataGrid.Columns>-->
+        <ListView Name="EmployeeList" HorizontalAlignment="Stretch" ItemsSource ="{Binding}" VerticalAlignment="Top" Margin="10" Height="350" Grid.Column="0">
             <ListView.View>
                 <GridView >
                     <GridView.Columns>
@@ -33,23 +26,21 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <DataGrid Name="DepartmentGrid" HorizontalAlignment="Stretch" ItemsSource ="{Binding}" AutoGenerateColumns="False" EnableRowVirtualization="True"  VerticalAlignment="Top" Margin="10" Height="350" Grid.Column="1" SelectionChanged="DepartmentList_SelectionChanged">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                <DataGridTextColumn Header="Название" Binding="{Binding Title}"/>
-            </DataGrid.Columns>
-            <!--<ListView.View>
+        <ListView Name="DepartmentList" HorizontalAlignment="Stretch" ItemsSource ="{Binding}" VerticalAlignment="Top" Margin="10" Height="350" Grid.Column="1" SelectionChanged="DepartmentList_SelectionChanged" SelectedValue="ID">
+            <ListView.View>
                 <GridView >
                     <GridView.Columns>
                         <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
                         <GridViewColumn Header="Департамент" DisplayMemberBinding="{Binding Title}"></GridViewColumn>
                     </GridView.Columns>
                 </GridView>
-            </ListView.View>-->
-        </DataGrid>
+            </ListView.View>
+        </ListView>
         <Button Name="CreateEmployeeBtn" Content="Создать сотрудника" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10" FontSize="14" Padding="5"/>
         <Button Name="CreateDepartmentBtn" Content="Создать департамент" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,50,10,0" FontSize="14" Padding="5"/>
         <Button Name="ChangeEmployeeBtn" Content="Изменить сотрудника" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,90,10,0" FontSize="14" Padding="5"/>
         <Button Name="ChangeDepartmentBtn" Content="Изменить департамент" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,130,10,0" FontSize="14" Padding="5"/>
+        <Button Name="DeleteEmployeeBtn" Content="Удалить сотрудника" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,170,10,0" FontSize="14" Padding="5"/>
+        <Button Name="DeleteDepartmentBtn" Content="Удалить департамент" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,210,10,0" FontSize="14" Padding="5"/>
     </Grid>
 </Window>

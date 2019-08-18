@@ -25,25 +25,19 @@ namespace Lesson_5
     {
         public Employee worker;
         public Department department;
-        DataTable EmployeeTable;
-        DataTable DepartmentTable;
         public MainWindow()
         {
             InitializeComponent();
             worker = new Employee();
             department = new Department();
-            EmployeeTable = worker.Table;
-            DepartmentTable = department.Table;
-            EmployeeGrid.DataContext = EmployeeTable.DefaultView;
-            DepartmentGrid.DataContext = DepartmentTable.DefaultView;
-            ChangeEmployeeBtn.Click += (sender, e) => new EmployeeEditor((DataRowView)EmployeeGrid.SelectedItem, worker, department).Show();
-            //ChangeDepartmentBtn.Click += (sender, e) => new DepartmentEditor(DepartmentList.SelectedItem as Department).Show();
+            EmployeeList.DataContext = worker.Table.DefaultView;
+            DepartmentList.DataContext = department.Table.DefaultView;
+            ChangeEmployeeBtn.Click += (sender, e) => new EmployeeEditor((DataRowView)EmployeeList.SelectedItem, worker, department).Show();
+            ChangeDepartmentBtn.Click += (sender, e) => new DepartmentEditor((DataRowView)DepartmentList.SelectedItem, department).Show();
             CreateEmployeeBtn.Click += (sender, e) => new CreateEmployee().Show();
             CreateDepartmentBtn.Click += (sender, e) => new CreateDepartment().Show();
-            //this.Activated += (sender, e) => {
-            //    EmployeeGrid.DataContext = EmployeeTable.DefaultView;
-            //    DepartmentGrid.DataContext = DepartmentTable.DefaultView;
-            //};
+            DeleteEmployeeBtn.Click += (sender, e) => worker.EmployeeDelete((DataRowView)EmployeeList.SelectedItem);
+            DeleteDepartmentBtn.Click += (sender, e) => department.DepartmentDelete((DataRowView)DepartmentList.SelectedItem);
         }
 
         private void DepartmentList_SelectionChanged(object sender, SelectionChangedEventArgs e)

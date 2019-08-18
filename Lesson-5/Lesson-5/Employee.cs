@@ -46,7 +46,7 @@ namespace Lesson_5
             _adapter.Update(Table);
             _connection.ConnectionClose();
         }
-        public void EmployeeUpdate(string firstName, string lastName, string middleName, int departmentId, DataRowView dataRow)
+        public void EmployeeUpdate(string firstName, string lastName, string middleName, DataRowView departmentId, DataRowView dataRow)
         {
             _connection.ConnectionOpen();
             SqlCommand command = new SqlCommand("UPDATE Employees SET FirstName=@FirstName, LastName=@LastName, MiddleName=@MiddleName, DepartmentId=@DepartmentId WHERE ID=@ID", _connection.SqlConnection);
@@ -54,24 +54,24 @@ namespace Lesson_5
             command.Parameters.Add("@LastName", System.Data.SqlDbType.NVarChar, 50, "LastName");
             command.Parameters.Add("@MiddleName", System.Data.SqlDbType.NVarChar, 50, "MiddleName");
             command.Parameters.Add("@DepartmentId", System.Data.SqlDbType.BigInt, 0, "DepartmentId");
-            _adapter.UpdateCommand = command;
-            DataRow newDataRow = dataRow.Row;
+            command.Parameters.Add("@ID", System.Data.SqlDbType.BigInt, 0, "ID");
+            _adapter.UpdateCommand = command;       
             dataRow.BeginEdit();
-            newDataRow["FirstName"] = firstName;
-            newDataRow["LastName"] = lastName;
-            newDataRow["MiddleName"] = middleName;
-            newDataRow["DepartmentId"] = departmentId;
+            dataRow.Row["FirstName"] = firstName;
+            dataRow.Row["LastName"] = lastName;
+            dataRow.Row["MiddleName"] = middleName;
+            dataRow.Row["DepartmentId"] = departmentId.Row.Field<Int64>("ID");
             dataRow.CancelEdit();
             _adapter.Update(Table);
             _connection.ConnectionClose();
         }
-        public void EmployeeDelete(int id, DataRow dataRow)
+        public void EmployeeDelete(DataRowView dataRow)
         {
             _connection.ConnectionOpen();
             SqlCommand command = new SqlCommand("DELETE FROM Employees WHERE ID=@ID", _connection.SqlConnection);
             command.Parameters.Add("@ID", System.Data.SqlDbType.BigInt, 0, "ID");
             _adapter.DeleteCommand = command;
-            Table.Rows.Remove(dataRow);
+            dataRow.Row.Delete();
             _adapter.Update(Table);
             _connection.ConnectionClose();
         }
@@ -84,49 +84,6 @@ namespace Lesson_5
             adapter.Fill(table);
             _connection.ConnectionClose();
             return table;
-        }
-    //    peopleDataGrid.DataContext = dt.DefaultView;
-
-    //        cBox.ItemsSource = dt.DefaultView;
-
-    //    }
-    //private void addButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    // добавим новую строку
-    //    DataRow newRow = dt.NewRow();
-    //    EditWindow editWindow = new EditWindow(newRow);
-    //    editWindow.ShowDialog();
-
-    //    if (editWindow.DialogResult.Value)
-    //    {
-    //        dt.Rows.Add(editWindow.resultRow);
-    //        adapter.Update(dt);
-    //    }
-    //}
-    //private void updateButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    DataRowView newRow = (DataRowView)peopleDataGrid.SelectedItem;
-    //    newRow.BeginEdit();
-
-    //    EditWindow editWindow = new EditWindow(newRow.Row);
-    //    editWindow.ShowDialog();
-
-    //    if (editWindow.DialogResult.HasValue && editWindow.DialogResult.Value)
-    //    {
-    //        newRow.EndEdit();
-    //        adapter.Update(dt);
-    //    }
-    //    else
-    //    {
-    //        newRow.CancelEdit();
-    //    }
-    //}
-    //private void deleteButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    DataRowView newRow = (DataRowView)peopleDataGrid.SelectedItem;
-
-    //    newRow.Row.Delete();
-    //    adapter.Update(dt);
-    //}
-}
+        }   
+    }
 }

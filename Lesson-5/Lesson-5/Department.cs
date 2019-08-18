@@ -36,22 +36,26 @@ namespace Lesson_5
             _adapter.Update(Table);
             _connection.ConnectionClose();
         }
-        public void DepartmentUpdate(string title, int id)
+        public void DepartmentUpdate(string title, DataRowView dataRow)
         {
             _connection.ConnectionOpen();
             SqlCommand command = new SqlCommand("UPDATE Departments SET Title=@Title WHERE ID=@ID", _connection.SqlConnection);
             command.Parameters.Add("@Title", System.Data.SqlDbType.NVarChar, 50, "Title");
-            command.Parameters.Add("@ID", System.Data.SqlDbType.BigInt, 0, "ID");
+            command.Parameters.Add("@ID", System.Data.SqlDbType.NVarChar, 50, "ID");
             _adapter.UpdateCommand = command;
+            dataRow.BeginEdit();
+            dataRow.Row["Title"] = title;
+            dataRow.EndEdit();
             _adapter.Update(Table);
             _connection.ConnectionClose();
         }
-        public void DepartmentDelete(int id)
+        public void DepartmentDelete(DataRowView dataRow)
         {
             _connection.ConnectionOpen();
             SqlCommand command = new SqlCommand("DELETE FROM Departments WHERE ID=@ID", _connection.SqlConnection);
             command.Parameters.Add("@ID", System.Data.SqlDbType.BigInt, 0, "ID");
             _adapter.DeleteCommand = command;
+            dataRow.Row.Delete();
             _adapter.Update(Table);
             _connection.ConnectionClose();
         }

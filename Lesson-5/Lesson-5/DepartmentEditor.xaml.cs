@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,9 +24,14 @@ namespace Lesson_5
         {
             InitializeComponent();
         }
-        public DepartmentEditor(Department department): this()
+        public DepartmentEditor(DataRowView dataRow, Department department): this()
         {
-            StackPanel.DataContext = department;   
+            DepartmentTxt.Text = dataRow.Row["Title"].ToString();
+            CreateButton.Click += (sender, e) =>
+            {
+                department.DepartmentUpdate(DepartmentTxt.Text, dataRow);
+                this.Close();
+            };
         }
     }
 }

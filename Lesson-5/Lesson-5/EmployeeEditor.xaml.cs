@@ -33,23 +33,7 @@ namespace Lesson_5
             MiddleNameTxt.Text = dataRow.Row["MiddleName"].ToString();
             ApplyBtn.Click += (sender, e) =>
             {
-                Connection connection = new Connection();
-                connection.ConnectionOpen();
-                SqlCommand command = new SqlCommand("UPDATE Employees SET FirstName=@FirstName, LastName=@LastName, MiddleName=@MiddleName, DepartmentId=@DepartmentId WHERE ID=@ID", connection.SqlConnection);
-                command.Parameters.Add("@FirstName", System.Data.SqlDbType.NVarChar, 50, "FirstName");
-                command.Parameters.Add("@LastName", System.Data.SqlDbType.NVarChar, 50, "LastName");
-                command.Parameters.Add("@MiddleName", System.Data.SqlDbType.NVarChar, 50, "MiddleName");
-                command.Parameters.Add("@DepartmentId", System.Data.SqlDbType.BigInt, 0, "DepartmentId");
-                employee._adapter.UpdateCommand = command;
-                DataRow newDataRow = dataRow.Row;
-                dataRow.BeginEdit();
-                newDataRow["FirstName"] = FirstNameTxt.Text;
-                newDataRow["LastName"] = LastNameTxt.Text;
-                newDataRow["MiddleName"] = MiddleNameTxt.Text;
-                newDataRow["DepartmentId"] = Int64.Parse(DepartmentsList.SelectedValue.ToString()); 
-                dataRow.CancelEdit();
-                employee._adapter.Update(employee.Table);
-                connection.ConnectionClose(); 
+                employee.EmployeeUpdate(FirstNameTxt.Text, LastNameTxt.Text, MiddleNameTxt.Text, DepartmentsList.SelectedValue as DataRowView, dataRow);
                 this.Close();
             };
         }

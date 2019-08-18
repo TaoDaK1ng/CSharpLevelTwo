@@ -14,7 +14,7 @@
         <Button Name="CreateButton" Content="Применить" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0" FontSize="14" Padding="5" Height="30"/>
         <StackPanel Name="StackPanel" Margin="10">
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Название департамента" VerticalAlignment="Top" Grid.Column="0" FontSize="14"/>
-        <TextBox HorizontalAlignment="Stretch" Height="23" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="0"/>
+        <TextBox Name="DepartmentTxt" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="0"/>
         </StackPanel>
     </Grid>
 </Window>
